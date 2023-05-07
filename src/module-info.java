@@ -1,0 +1,9 @@
+/**
+ * 
+ */
+/**
+ * @author ras
+ *
+ */
+module minesweeper {
+}
