@@ -4,9 +4,10 @@ import java.util.Scanner;
 
 public class Main {
 	
-
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
+		// Set a 10 x 10 grid with 10 mines
+		
 		Game game = new Game(10, 10, 10);
 		System.out.println("BOOTLEG MINESWEEPER\n");
 		
@@ -15,7 +16,7 @@ public class Main {
 		
 		// loop that keeps asking for user input until lose, win, or keep playing
 		while (true) {
-			System.out.print("\nEnter coordinates (row column): ");
+			System.out.print("\nEnter coordinates (row column): ");	
 			int row = input.nextInt() - 1;
 			int col = input.nextInt() - 1;
 			game.open(row, col);	
@@ -34,8 +35,6 @@ public class Main {
 				game.display();
 			}
 		}
-		
-		// if all non-mine open - WIN!
 
 		input.close();
 	}

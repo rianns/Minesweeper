@@ -2,35 +2,39 @@ package minesweeper;
 
 public class Game{
 	public static Cell[][] grid;
-	
-	private int gridRows;
-	private int gridCols;
+
+	private int rows;
+	private int cols;
+	private int mines;
 	
 	public Game(int gridRows, int gridCols, int gridMines) {
+		Grid newGrid = new Grid(gridRows, gridCols, gridMines);
+		grid = newGrid.getGrid();
 		
+		rows = newGrid.getRows();
+		cols = newGrid.getCols();
+		mines = newGrid.getMines();
 		
-		
-		grid = new Cell[gridRows][gridCols];
-		for (int i = 0; i < gridRows; i++) {
-			for (int j = 0; j < gridCols; j++) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				grid[i][j] = new Cell();
 			}
 		}
-		this.gridRows = gridRows;
-		this.gridCols = gridCols;
-		
-		// mines randomize
+		setMines();
+	    
+	}
+	
+	private void setMines() {
 		int count = 0;
-	    while (count < gridMines) {
-	        int row = (int) (Math.random() * gridRows);
-	        int col = (int) (Math.random() * gridCols);
+	    while (count < mines) {
+	        int row = (int) (Math.random() * rows);
+	        int col = (int) (Math.random() * cols);
 	        if (!grid[row][col].isMine()) {
 	            grid[row][col].setMine();
 	            updateNext(row, col);
 	            count++;
 	        }
 	    }
-	    
 	}
 	
 	// update adjacent cells when mine is set
@@ -38,7 +42,7 @@ public class Game{
 		for (int i = row - 1; i <= row + 1; i++) {
 			for (int j = col - 1; j <= col + 1; j++) {		
 				
-				boolean isInBounds = i >= 0 && i < gridRows && j >= 0 && j < gridCols;
+				boolean isInBounds = i >= 0 && i < rows && j >= 0 && j < cols;
 				
 				if (isInBounds) {
 					Cell currentCell = grid[i][j];
@@ -66,7 +70,7 @@ public class Game{
 		for (int i = row - 1; i <= row + 1; i++) {
 			for (int j = col - 1; j <= col + 1; j++) {
 				
-				boolean isInBounds = i >= 0 && i < gridRows && j >= 0 && j < gridCols;
+				boolean isInBounds = i >= 0 && i < rows && j >= 0 && j < cols;
 				
 				if (isInBounds) {
 					open(i, j);
@@ -76,8 +80,8 @@ public class Game{
 	}
 	
 	public void openAll() {
-		for (int i = 0; i < gridRows; i++) {
-			for (int j = 0; j < gridCols; j++) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				Cell cell = grid[i][j];
 				if (cell.isOpen() == false || cell.isMine()) {
 					cell.setOpen();
@@ -87,8 +91,8 @@ public class Game{
 	}
 	
 	public boolean checkWin() {
-		for (int i = 0; i < gridRows; i++) {
-			for (int j = 0; j < gridCols; j++) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				Cell cell = grid[i][j];
 				if (!cell.isOpen() && !cell.isMine()) {
 					return false;
@@ -100,8 +104,8 @@ public class Game{
 	
 	// code to display grid
 	public void display() {
-		for (int i = 0; i < gridRows; i++) {
-			for (int j = 0; j < gridCols; j++) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				if (grid[i][j].isOpen()) {
 					if (grid[i][j].isMine()) {
 						System.out.print("M ");
@@ -116,7 +120,7 @@ public class Game{
 		}
 	}
 	
-	// maybe a game over function
+	// game over function
 	public boolean isGameOver(int row, int col) {
 		
 		Cell test = grid[row][col];
